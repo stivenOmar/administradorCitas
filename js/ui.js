@@ -58,11 +58,11 @@ class UI {
   }
 
   mostrarTextoBoton() {
-    if (this.propiedadDatasetForm("edit")) {
+    if (this.propiedadDatasetForm("edit") == "true") {
       this.form.querySelector("#btnSubmit").textContent = "Editar Cita";
     }
 
-    if (!this.propiedadDatasetForm("edit")) {
+    if (this.propiedadDatasetForm("edit") == "false") {
       this.form.querySelector("#btnSubmit").textContent = "Crear Cita";
     }
   }
@@ -77,7 +77,13 @@ class UI {
     }, 3000);
   }
 
+  desabilitarBotonEliminar(id, valor) {
+    const citaUi = document.querySelector(`[data-id*='${id}']`);
+    citaUi.querySelector(".btnEliminar").disabled = valor;
+  }
+
   mostrarDatosForm(data) {
+    this.desabilitarBotonEliminar(data.id, true);
     this.form.querySelector("#mascota").value = data.nombreMascota;
     this.form.querySelector("#propietario").value = data.propietario;
     this.form.querySelector("#telefono").value = data.telefono;
@@ -98,6 +104,7 @@ class UI {
     citaUi.querySelector(`.hora`).textContent = data.hora;
     citaUi.querySelector(`.sintomas`).textContent = data.sintomas;
     this.form.reset();
+    this.desabilitarBotonEliminar(data.id, false);
     this.cambiarPropiedaDatasetForm("edit", false);
     this.mostrarTextoBoton();
     this.mostrarNotificacion("success", "Edición de cita realizada");
